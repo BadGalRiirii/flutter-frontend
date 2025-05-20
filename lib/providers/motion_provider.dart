@@ -19,7 +19,7 @@ class MotionProvider extends ChangeNotifier {
   }
 
   void _startPolling() {
-    _pollingTimer = Timer.periodic(const Duration(seconds: 2), (_) => fetchEvents());
+    _pollingTimer = Timer.periodic(const Duration(seconds: 3), (_) => fetchEvents());
   }
 
   Future<void> fetchEvents() async {
