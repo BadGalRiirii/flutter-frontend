@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:frontend_app/providers/motion_provider.dart';
 
 class SensorChart extends StatelessWidget {
-  final List<double> data;
+  final List<MotionEvent> data;
 
   const SensorChart({super.key, required this.data});
 
@@ -10,19 +11,20 @@ class SensorChart extends StatelessWidget {
   Widget build(BuildContext context) {
     final spots = <FlSpot>[];
     for (int i = 0; i < data.length; i++) {
-      spots.add(FlSpot(i.toDouble(), data[i]));
+      spots.add(FlSpot(
+          data[i].timestamp.millisecondsSinceEpoch.toDouble(),
+          data[i].status.toDouble()
+      ));
     }
 
     return LineChart(
       LineChartData(
-        minX: 0,
-        maxX: 29,
-        minY: data.isEmpty ? 0 : data.reduce((a, b) => a < b ? a : b) - 1,
-        maxY: data.isEmpty ? 0 : data.reduce((a, b) => a > b ? a : b) + 1,
+        minY: 0,
+        maxY: 1,
         lineBarsData: [
           LineChartBarData(
             spots: spots,
-            isCurved: true,
+            isCurved: false,
             color: Colors.deepPurple,
             barWidth: 3,
             dotData: FlDotData(show: false),
@@ -30,7 +32,7 @@ class SensorChart extends StatelessWidget {
         ],
         titlesData: FlTitlesData(
           leftTitles: AxisTitles(
-            sideTitles: SideTitles(showTitles: true, interval: 2),
+            sideTitles: SideTitles(showTitles: true, interval: 5  ),
           ),
           bottomTitles: AxisTitles(
             sideTitles: SideTitles(showTitles: false),

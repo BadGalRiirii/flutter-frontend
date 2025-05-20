@@ -59,7 +59,7 @@ class MotionProvider extends ChangeNotifier {
 
 class MotionEvent  {
   final String deviceId;
-  final String status;
+  final int status;
   final DateTime timestamp;
 
   MotionEvent({
@@ -71,7 +71,7 @@ class MotionEvent  {
   factory MotionEvent.fromJson(Map<String, dynamic> json) {
     return MotionEvent(
         deviceId: json['device_id'] ?? 'Unknown',
-        status: json['status'],
+        status: json['status'] == "motion" ? 1 : 0,
         timestamp: DateTime.parse(json['timestamp'])
     );
   }
