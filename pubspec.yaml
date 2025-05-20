@@ -14,6 +14,9 @@ dependencies:
   sensors_plus: ^3.0.0
   fl_chart: ^0.65.0
   provider: ^6.1.2
+  http: ^1.4.0
+  shared_preferences: ^2.5.3
+  flutter_secure_storage: ^9.2.4
 
   # Firebase or authentication can be added later if needed
   # firebase_auth: ^4.17.5

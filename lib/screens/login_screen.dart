@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_app/services/auth.dart';
 import 'dashboard_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -12,11 +13,18 @@ class _LoginScreenState extends State<LoginScreen> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  void _handleLogin() {
-    final username = _usernameController.text.trim();
-    final password = _passwordController.text.trim();
+  void _handleLogin() async {
+    var loginRes = false;
+    try {
+      loginRes = await login(
+        _usernameController.text.trim(),
+        _passwordController.text.trim()
+      );
+    } catch (e) {
+        print(e);
+    }
 
-    if (username == 'admin' && password == 'admin') {
+    if (loginRes) {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const DashboardScreen()),
       );
