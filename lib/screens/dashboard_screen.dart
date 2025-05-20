@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_app/providers/motion_provider.dart';
 import 'package:frontend_app/screens/login_screen.dart';
 import 'package:frontend_app/services/auth.dart';
 import 'package:frontend_app/ui/app_drawer.dart';
 import 'package:frontend_app/ui/button.dart';
+import 'package:provider/provider.dart';
 import 'home_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
@@ -10,6 +12,8 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final events = context.watch<MotionProvider>().events;
+
     return Scaffold(
       appBar: AppBar(
         surfaceTintColor: Colors.red,
@@ -17,26 +21,18 @@ class DashboardScreen extends StatelessWidget {
         centerTitle: true,
       ),
       drawer: AppDrawer(),
-      body: Container(
-        alignment: Alignment.topCenter,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            spacing: 10,
-            children: [
-              AppButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => const HomeScreen()),
-                    );
-                  },
-                  label: 'Go to Live Sensor Data'
-              ),
-            ],
-          ),
-        ),
-      )
+      body: events.isEmpty
+          ? const Center(child: Text('No data yet...'))
+          : ListView.builder(
+        itemCount: events.length,
+        itemBuilder: (context, index) {
+          final event = events[index];
+          return ListTile(
+            title: Text('${event.deviceId} - ${event.status}'),
+            subtitle: Text(event.timestamp.toLocal().toString()),
+          );
+        },
+      ),
     );
   }
 }
