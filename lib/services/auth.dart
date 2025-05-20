@@ -31,3 +31,15 @@ Future<bool> login(String uname, String pass) async {
 
   return response.statusCode == 200;
 }
+
+Future<bool> logout() async {
+  final ApiRoutes apiRoutes = ApiRoutes();
+  final FlutterSecureStorage flutterSecureStorage = FlutterSecureStorage();
+  var res = true;
+  try {
+    await flutterSecureStorage.delete(key: 'auth_tokens');
+  } catch (e) {
+    res = false;
+  }
+  return res;
+}
