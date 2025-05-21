@@ -28,6 +28,22 @@ class MotionTimelineChart extends StatelessWidget {
 
     return LineChart(
       LineChartData(
+        lineTouchData: LineTouchData(
+          enabled: true,
+          handleBuiltInTouches: true,
+          touchTooltipData: LineTouchTooltipData(
+            getTooltipItems: (List<LineBarSpot> touchedSpots) {
+              return touchedSpots.map((spot) {
+                if (spot.y != 1) return null;
+                final touchedTime = startTime.add(Duration(seconds: spot.x.toInt()));
+                return LineTooltipItem(
+                  DateFormat('h:mm:ss a').format(touchedTime),
+                  const TextStyle(color: Colors.white, fontSize: 12),
+                );
+              }).toList();
+            }
+          ),
+        ),
         lineBarsData: [
           // Base thin line (can be removed if not needed)
           LineChartBarData(
